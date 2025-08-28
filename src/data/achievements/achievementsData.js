@@ -1,31 +1,31 @@
 export const achievementsData = [
   {
     id: 1,
-    nameOfEvent: "Cognizance '25",
+    nameOfEvent: "IIT Patna",
     location: "IIT Roorkee",
     dateOfEvent: "2025-03-21",
     winningPosition: "First (15Kg), Second (30Kg)",
     shortDescription: "Achievements in robotics competition at Cognizance '25.",
     longDescription:
       "Participated in robotics events including 15Kg and 30Kg categories. Secured First place in 15Kg and Second place in 30Kg.",
-    images: ["/achievements/cognizance25/1.jpg", "/achievements/cognizance25/2.jpg", "/achievements/cognizance25/3.jpg" ,"/achievements/cognizance25/4.jpg", "/achievements/cognizance25/5.jpg", "/achievements/cognizance25/6.jpg","/achievements/cognizance25/7.jpg"],
+    images: ["/achievements/cognizance25/1.jpg"],
     visibility: true,
   },
   {
     id: 2,
-    nameOfEvent: "Celesta '24",
+    nameOfEvent: "IIT Patna",
     location: "IIT Patna",
     dateOfEvent: "2024-10-18",
     winningPosition: "First (15Kg)",
     shortDescription: "Victory in robotics at Celesta '24.",
     longDescription:
       "Won First place in the 15Kg category at the prestigious Celesta '24 event.",
-    images: ["/achievements/celesta24/1.jpg","/achievements/celesta24/2.jpg"],
+    images: ["/achievements/celesta24/1.jpg"],
     visibility: true,
   },
   {
     id: 3,
-    nameOfEvent: "Infotsav '24",
+    nameOfEvent: "IIT Gwalior",
     location: "IIIT Gwalior",
     dateOfEvent: "2024-10-18",
     winningPosition:
@@ -50,25 +50,25 @@ export const achievementsData = [
   },
   {
     id: 5,
-    nameOfEvent: "Utkarsh '25",
+    nameOfEvent: "BBD",
     location: "BBD",
     dateOfEvent: "2025-02-23",
     winningPosition: "Second (Robo Soccer), First & Third (Robo War)",
     shortDescription: "Victories at Utkarsh '25.",
     longDescription:
       "Won Second place in Robo Soccer and First & Third places in Robo War categories.",
-    images: ["/achievements/utkarsh25/1.jpg","/achievements/utkarsh25/2.jpg","/achievements/utkarsh25/3.jpg","/achievements/utkarsh25/4.jpg","/achievements/utkarsh25/5.jpg","/achievements/utkarsh25/6.jpg","/achievements/utkarsh25/7.jpg","/achievements/utkarsh25/8.jpg","/achievements/utkarsh25/9.jpg","/achievements/utkarsh25/10.jpg"],
+    images: ["/achievements/utkarsh25/1.jpg"],
     visibility: true,
   },
   {
     id: 6,
-    nameOfEvent: "Prometheo",
+    nameOfEvent: "IIT Jodhpur",
     location: "IIT Jodhpur",
     dateOfEvent: null,
     winningPosition: "Third (Robo War 60Kg)",
     shortDescription: "Achievement at Prometheo.",
     longDescription: "Secured Third place in the Robo War 60Kg category.",
-    images: [],
+    images: ["/achievements/jodhpur.jpg"],
     visibility: true,
   },
   {
@@ -95,7 +95,7 @@ export const achievementsData = [
   },
   {
     id: 9,
-    nameOfEvent: "Amiphoria",
+    nameOfEvent: "Amity University",
     location: "Amity University, Lucknow",
     dateOfEvent: null,
     winningPosition: "First Robo War, Second Robo War",
@@ -128,7 +128,7 @@ export const achievementsData = [
   },
   {
     id: 12,
-    nameOfEvent: "BotFiesta",
+    nameOfEvent: "MUIT",
     location: "MUIT, Lucknow",
     dateOfEvent: null,
     winningPosition: "Second Robo Soccer",
@@ -161,7 +161,7 @@ export const achievementsData = [
   },
   {
     id: 15,
-    nameOfEvent: "TechKirti",
+    nameOfEvent: "IIT Kanpur",
     location: "IITK, Kanpur",
     dateOfEvent: null,
     winningPosition: "First Robo Soccer",

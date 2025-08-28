@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "db:seed": "npm run seed:team && npm run seed:achievement",
+    "db:wipe":"node src/scripts/wipeDb.js",
     "seed:team": "node src/scripts/seedDatabase.js",
     "seed:achievement": "node src/scripts/seedAchievements.js"
 

@@ -65,7 +65,6 @@ const AchievementItem = ({ achievement, isLeft, index }) => {
           isLeft ? "md:text-right text-left" : "text-left"
         }`}
       >
-        {/* Organic card design */}
         <div className="relative group">
           <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm border border-purple-500/20 p-4 md:p-6 rounded-2xl md:rounded-3xl hover:border-purple-400/40 transition-all duration-500 transform hover:-translate-y-1 md:hover:-translate-y-2">
             <p className="mb-3 md:mb-4 text-base md:text-lg text-gray-300 font-medium">
@@ -89,7 +88,6 @@ const AchievementItem = ({ achievement, isLeft, index }) => {
               {longDescription || shortDescription}
             </p>
           </div>
-          {/* Organic glow effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/5 to-pink-500/0 opacity-0 group-hover:opacity-20 rounded-2xl md:rounded-3xl blur-xl transition-opacity duration-500"></div>
         </div>
       </div>
@@ -102,19 +100,17 @@ const AchievementsTimeline = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Simple function to fetch achievements
   const fetchAchievements = async () => {
     try {
       setLoading(true);
       setError(null);
-
       const response = await fetch("/api/achievements");
       if (!response.ok) {
         throw new Error("Failed to fetch achievements");
       }
-
       const data = await response.json();
-      setAchievements(data.achievements || []);
+      // Only take the first 8 achievements
+      setAchievements(data.achievements?.slice(0, 8) || []);
     } catch (err) {
       setError(err.message);
       console.error("Error fetching achievements:", err);
@@ -123,7 +119,6 @@ const AchievementsTimeline = () => {
     }
   };
 
-  // Fetch data on component mount
   useEffect(() => {
     fetchAchievements();
   }, []);
@@ -161,7 +156,6 @@ const AchievementsTimeline = () => {
   return (
     <section className="text-white py-8 md:py-16">
       <div className="container mx-auto flex flex-col items-start lg:flex-row my-6 md:my-12 lg:my-24">
-        {/* Header Section */}
         <div className="flex flex-col w-full lg:sticky lg:top-36 lg:w-1/3 mt-2 md:mt-12 px-4 md:px-8 mb-8 lg:mb-0">
           <p className="ml-2 text-gray-400 font-semibold uppercase tracking-loose mb-3 md:mb-4 text-sm md:text-base">
             Our Story
@@ -173,38 +167,11 @@ const AchievementsTimeline = () => {
             From our first competition to our latest triumph, each achievement
             represents countless hours of dedication, innovation, and teamwork.
           </p>
-          <div className="space-y-2 md:space-y-3 text-gray-200">
-            <p className="flex items-center">
-              <span className="text-xl md:text-2xl mr-2 md:mr-3">📊</span>
-              <span className="font-semibold text-sm md:text-base">
-                Total Achievements:
-              </span>
-              <span className="text-gray-300 font-bold ml-2 text-sm md:text-base">
-                {achievements.length}
-              </span>
-            </p>
-            <p className="flex items-center">
-              <span className="text-xl md:text-2xl mr-2 md:mr-3">🏆</span>
-              <span className="font-semibold text-sm md:text-base">
-                Latest Update:
-              </span>
-              <span className="text-gray-300 font-bold ml-2 text-sm md:text-base">
-                {achievements.length > 0
-                  ? new Date(achievements[0]?.dateOfEvent).getFullYear()
-                  : "No data"}
-              </span>
-            </p>
-          </div>
         </div>
-
-        {/* Timeline Section */}
         <div className="ml-0 lg:ml-12 lg:w-2/3 w-full">
           <div className="container mx-auto w-full h-full">
             <div className="relative wrap overflow-hidden p-4 md:p-10 h-full">
-              {/* Organic timeline line - hidden on mobile, centered line on larger screens */}
               <div className="absolute h-full w-0.5 md:w-1 bg-yellow-500 left-4 md:left-1/2 transform md:-translate-x-1/2 rounded-full hidden md:block"></div>
-
-              {/* Mobile timeline dots */}
               <div className="md:hidden">
                 {achievements.map((_, index) => (
                   <div
@@ -214,21 +181,15 @@ const AchievementsTimeline = () => {
                   ></div>
                 ))}
               </div>
-
-              {/* Achievements */}
-              {achievements.map((achievement, index) => {
-                return (
-                  <AchievementItem
-                    key={achievement._id || index}
-                    achievement={achievement}
-                    isLeft={index % 2 === 0}
-                    index={index}
-                  />
-                );
-              })}
+              {achievements.map((achievement, index) => (
+                <AchievementItem
+                  key={achievement._id || index}
+                  achievement={achievement}
+                  isLeft={index % 2 === 0}
+                  index={index}
+                />
+              ))}
             </div>
-
-            {/* Organic decoration */}
             <div className="text-center mt-6 md:mt-8">
               <div className="inline-block p-3 md:p-4 bg-yellow-500/20 rounded-full border border-yellow-500/30">
                 <img

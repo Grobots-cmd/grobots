@@ -32,7 +32,7 @@ function Hero() {
       {!isMobile && !splineError && (
         <div
           ref={splineWrapperRef}
-          className="absolute inset-0 z-10 spline-container"
+          className="absolute inset-0 z-10 spline-container mt-18 mx-2"
         >
           <Spline
             scene="https://prod.spline.design/H1bo-En2Ru5vpwQZ/scene.splinecode"

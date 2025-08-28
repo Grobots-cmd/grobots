@@ -17,17 +17,15 @@ function Achievements() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Simple function to fetch achievements
+  // Fetch achievements
   const fetchAchievements = async () => {
     try {
       setLoading(true);
       setError(null);
-
       const response = await fetch("/api/achievements");
       if (!response.ok) {
         throw new Error("Failed to fetch achievements");
       }
-
       const data = await response.json();
       setAchievements(data.achievements || []);
     } catch (err) {
@@ -43,7 +41,7 @@ function Achievements() {
     fetchAchievements();
   }, []);
 
-  // Helper functions for enhanced styling
+  // Helper functions for styling
   const getPositionIcon = (position) => {
     if (
       position.toLowerCase().includes("1st") ||
@@ -97,7 +95,6 @@ function Achievements() {
   };
 
   const getCategoryBadge = (achievement) => {
-    // All badges will be white on black
     return {
       color: "bg-white text-black",
       label: achievement.location?.toLowerCase().includes("international")
@@ -115,12 +112,10 @@ function Achievements() {
     if (!Array.isArray(achievements) || achievements.length === 0) {
       return { total: 0, firstPlace: 0, years: 0 };
     }
-
     const firstPlace = achievements.filter((a) => {
       const position = (a.winningPosition || "").toLowerCase();
       return position.includes("first") || position.includes("1st");
     }).length;
-
     const years = new Set();
     achievements.forEach((a) => {
       if (a.dateOfEvent) {
@@ -132,7 +127,6 @@ function Achievements() {
         }
       }
     });
-
     return {
       total: achievements.length,
       firstPlace,
@@ -150,18 +144,32 @@ function Achievements() {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center px-4">
         <div className="text-center">
+          {/* Enhanced spinner with smoother animation */}
           <motion.div
-            className="w-8 h-8 md:w-12 md:h-12 border-2 md:border-4 border-white border-t-transparent rounded-full mx-auto mb-4"
+            className="w-12 h-12 md:w-16 md:h-16 border-4 border-white border-t-transparent rounded-full mx-auto mb-4"
             animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            transition={{
+              duration: 3,
+              ease: "linear",
+              repeat: Infinity,
+            }}
+            aria-label="Loading achievements"
           />
-          <p className="text-white text-sm md:text-base">
+  
+          {/* Enhanced text with subtle animation */}
+          <motion.p
+            className="text-white text-sm md:text-lg font-medium"
+            initial={{ opacity: 0.8 }}
+            animate={{ opacity: 1 }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+          >
             Loading achievements...
-          </p>
+          </motion.p>
         </div>
       </div>
     );
   }
+  
 
   // Error state
   if (error) {
@@ -220,7 +228,6 @@ function Achievements() {
                 <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-white flex-shrink-0" />
               </div>
             </motion.div>
-
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -230,7 +237,6 @@ function Achievements() {
               <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-none">
                 <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent relative">
                   Our Achievements
-                  {/* Subtle glow effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-white/40 to-white/20 bg-clip-text text-transparent blur-sm -z-10"></div>
                 </span>
               </span>
@@ -242,15 +248,11 @@ function Achievements() {
               className="mb-12"
             >
               <p className="text-lg md:text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed font-light">
-                Cellebrating our Achievements on the path to excellence
+                Celebrating our Achievements on the path to excellence
                 <br className="hidden md:block" />
-                <span className="text-white font-medium">
-                  {" "}
-                  one at a time
-                </span>
+                <span className="text-white font-medium"> one at a time</span>
               </p>
             </motion.div>
-
             {/* Stats */}
             <motion.div
               className="flex xs:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 px-4 sm:px-6 md:px-8 py-4 md:py-6 rounded-lg bg-white/5 border border-white/20 max-w-2xl mx-auto"
@@ -292,84 +294,66 @@ function Achievements() {
             <div className="max-w-7xl mx-auto">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
                 {achievements.map((achievement, index) => {
-                  const positionColors = getPositionColors(
-                    achievement.winningPosition
-                  );
+                  const positionColors = getPositionColors(achievement.winningPosition);
                   const categoryBadge = getCategoryBadge(achievement);
-
                   return (
                     <motion.div
                       key={achievement._id || index}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{
-                        duration: 0.4,
-                        delay: index * 0.05,
-                      }}
-                      whileHover={{
-                        y: -3,
-                        transition: { duration: 0.2 },
-                      }}
+                      transition={{ duration: 0.4, delay: index * 0.05 }}
+                      whileHover={{ y: -3, transition: { duration: 0.2 } }}
                       className="group w-full"
                     >
-                      {/* Simple Card */}
-                      <div className="bg-white/5 border border-white/20 rounded-lg p-4 sm:p-5 md:p-6 h-full hover:bg-white/10 transition-all duration-300">
+                      {/* Bigger Card */}
+                      <div className="bg-white/5 border border-white/20 rounded-xl p-5 sm:p-6 md:p-7 h-full hover:bg-white/10 transition-all duration-300">
                         {/* Header */}
-                        <div className="mb-4 md:mb-6">
+                        <div className="mb-5 md:mb-6">
                           {/* Category Badge */}
                           <div
-                            className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-semibold mb-3 sm:mb-4 ${categoryBadge.color}`}
+                            className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full text-xs font-semibold mb-3 sm:mb-4 ${categoryBadge.color}`}
                           >
-                            <Star className="w-3 h-3 flex-shrink-0" />
-                            <span className="truncate">
-                              {categoryBadge.label}
-                            </span>
+                            <Star className="w-3.5 h-3.5 flex-shrink-0" />
+                            <span className="truncate">{categoryBadge.label}</span>
                           </div>
-
                           {/* Event Title */}
-                          <h3 className="text-base sm:text-lg md:text-xl font-bold text-white leading-tight mb-2 sm:mb-3 line-clamp-2 break-words">
+                          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight mb-3 sm:mb-4 line-clamp-2 break-words">
                             {achievement.nameOfEvent}
                           </h3>
-
                           {/* Position Badge */}
                           <div
-                            className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg font-bold text-xs sm:text-sm ${positionColors.bg} max-w-full`}
+                            className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-lg font-bold text-xs sm:text-sm ${positionColors.bg} max-w-full`}
                           >
                             <span className="flex-shrink-0">
                               {getPositionIcon(achievement.winningPosition)}
                             </span>
-                            <span className="truncate">
-                              {achievement.winningPosition}
-                            </span>
+                            <span className="truncate">{achievement.winningPosition}</span>
                           </div>
                         </div>
 
-                        {/* Image */}
-                        {Array.isArray(achievement.images) &&
-                        achievement.images[0] ? (
-                          <div className="mb-3 sm:mb-4 rounded-lg overflow-hidden border border-white/20">
+                        {/* Bigger Image */}
+                        {Array.isArray(achievement.images) && achievement.images[0] ? (
+                          <div className="mb-4 sm:mb-5 rounded-lg overflow-hidden border border-white/20">
                             <img
                               src={achievement.images[0]}
                               alt={achievement.nameOfEvent}
-                              className="w-full h-32 sm:h-36 md:h-40 object-cover"
+                              className="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover object-center"
                               loading="lazy"
                             />
                           </div>
                         ) : (
-                          <div className="mb-3 sm:mb-4 rounded-lg border border-white/20 bg-white/5 h-32 sm:h-36 md:h-40 flex items-center justify-center">
-                            <Trophy className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white/30" />
+                          <div className="mb-4 sm:mb-5 rounded-lg border border-white/20 bg-white/5 h-48 sm:h-56 md:h-64 lg:h-72 flex items-center justify-center">
+                            <Trophy className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-white/30" />
                           </div>
                         )}
 
                         {/* Meta Info */}
-                        <div className="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4">
+                        <div className="space-y-2 sm:space-y-2.5 mb-4 sm:mb-5">
                           {achievement.dateOfEvent && (
                             <div className="flex items-start gap-2 text-gray-300 text-xs sm:text-sm">
-                              <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 mt-0.5" />
+                              <Calendar className="w-4 h-4 sm:w-4.5 sm:h-4.5 flex-shrink-0 mt-0.5" />
                               <span className="break-words">
-                                {new Date(
-                                  achievement.dateOfEvent
-                                ).toLocaleDateString("en-US", {
+                                {new Date(achievement.dateOfEvent).toLocaleDateString("en-US", {
                                   year: "numeric",
                                   month: "long",
                                   day: "numeric",
@@ -377,34 +361,31 @@ function Achievements() {
                               </span>
                             </div>
                           )}
-
                           {achievement.location && (
                             <div className="flex items-start gap-2 text-gray-300 text-xs sm:text-sm">
-                              <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 mt-0.5" />
-                              <span className="break-words">
-                                {achievement.location}
-                              </span>
+                              <MapPin className="w-4 h-4 sm:w-4.5 sm:h-4.5 flex-shrink-0 mt-0.5" />
+                              <span className="break-words">{achievement.location}</span>
                             </div>
                           )}
                         </div>
 
                         {/* Description */}
                         {achievement.shortDescription && (
-                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 line-clamp-3 break-words">
+                          <p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-4 sm:mb-5 line-clamp-3 break-words">
                             {achievement.shortDescription}
                           </p>
                         )}
 
                         {/* Prize */}
                         {achievement.prizeWon && (
-                          <div className="pt-3 sm:pt-4 border-t border-white/20">
-                            <div className="flex items-center gap-2 mb-1">
-                              <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white flex-shrink-0" />
+                          <div className="pt-4 sm:pt-5 border-t border-white/20">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Award className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white flex-shrink-0" />
                               <span className="text-xs uppercase tracking-wider text-gray-400 font-semibold">
                                 Prize
                               </span>
                             </div>
-                            <div className="text-xs sm:text-sm text-white font-medium line-clamp-2 break-words">
+                            <div className="text-sm sm:text-base text-white font-medium line-clamp-2 break-words">
                               {achievement.prizeWon}
                             </div>
                           </div>

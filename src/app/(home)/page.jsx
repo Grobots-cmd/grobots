@@ -11,7 +11,18 @@ function Home() {
   return (
     <>
       <div className="home relative w-full">
-        <LightRays />
+      <LightRays
+        raysOrigin="top-center"
+        raysColor="#ffffff"
+        raysSpeed={1.5}
+        lightSpread={0.8}
+        rayLength={1.2}
+        followMouse={true}
+        mouseInfluence={0.2}
+        noiseAmount={0.1}
+        distortion={0.05}
+        className="custom-rays mb-12"
+      />        
         <Hero/>
         <About />
         <Projects />

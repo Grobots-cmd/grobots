@@ -61,13 +61,13 @@ function About() {
 
           {/* Right side - CardSwap component - Only show on desktop */}
           {isDesktop && (
-            <div className="lg:w-1/2 w-full relative h-[360px] sm:h-[420px] md:h-[480px] lg:h-[500px]">
+            <div className="lg:w-1/2 w-full relative h-[300px] sm:h-[420px] md:h-[480px] lg:h-[500px] mr-12 mb-20">
               <CardSwap
                 cardDistance={60}
                 verticalDistance={70}
                 delay={4000}
                 pauseOnHover={true}
-                width={600}
+                width={550}
                 height={450}
               >
                 {cards.map((card, index) => (

@@ -1,11 +1,9 @@
-import React, { useRef } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import Slider from "react-slick";
-import Airawat1 from "@/assets/Airawat1.jpg"
-import Sharanga1 from "@/assets/Sharanga1.jpg"
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from "lucide-react";
+import Airawat1 from "@/assets/Airawat1.jpg";
+import Sharanga1 from "@/assets/Sharanga1.jpg";
+import { ChevronLeft, ChevronRight, Plus, Minus } from "lucide-react";
 
 function Projects() {
   const projects = [
@@ -14,7 +12,7 @@ function Projects() {
       title: "Airawat – Semi-Vertical Drum Combat Robot",
       imageUrl: Airawat1,
       description:
-        "Lightweight yet durable Aluminium T6 alloy chassis with AR500 paneling. Semi-vertical drum weapon tuned for high-impact energy transfer. Optimized drive with Inginium P2 10 gearbox, H700 motor and Secure 120A ESC for torque–speed balance. Designed for endurance and striking power in combat competitions.",
+        "Lightweight yet durable Aluminium T6 alloy chassis with AR500 paneling. Semi-vertical drum weapon tuned for high-impact energy transfer.",
       materials: {
         Chassis: "Aluminium T6 Alloy",
         Panels: "AR500",
@@ -35,7 +33,7 @@ function Projects() {
       title: "Sharanga – Double-Disk Combat Robot",
       imageUrl: Sharanga1,
       description:
-        "Rugged Aluminium T6 chassis with AR500 paneling for maximum durability. Semi-vertical drum weapon engineered for precision hits and consistent damage. Inginium P219 gearbox with turbo motors provides superior acceleration and control. Collson wheels enhance grip and agility for battlebot tournaments.",
+        "Rugged Aluminium T6 chassis with AR500 paneling for maximum durability. Semi-vertical drum weapon engineered for precision hits.",
       materials: {
         Chassis: "Aluminium T6 Alloy",
         Panels: "AR500",
@@ -53,245 +51,176 @@ function Projects() {
     },
   ];
 
-  const sliderRef = useRef(null);
-
-  const settings = {
-    infinite: true,
-    speed: 800,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 8000,
-    adaptiveHeight: false,
-    arrows: false,
-    dots: true,
-    pauseOnHover: true,
-    pauseOnFocus: true,
-  };
-
   return (
-    <section className="w-full mt-8 sm:mt-12 md:mt-16 py-8 sm:py-12 md:py-16 lg:py-20 bg-black">
-      <div className="mx-3 sm:mx-4 md:mx-6 lg:mx-8 xl:mx-20">
-        <header className="text-center mb-6 sm:mb-8 md:mb-10 lg:mb-12">
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight text-white mb-2 sm:mb-3">
+    <section className="w-full py-12 md:py-16 bg-black relative">
+      <div className="mx-4 sm:mx-6 md:mx-8 lg:mx-12">
+        <header className="text-center mb-8 md:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
             Featured Projects
           </h2>
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 max-w-2xl mx-auto">
-            A snapshot of what we're building
+          <p className="text-sm sm:text-base text-gray-400 max-w-3xl mx-auto">
+            Explore our cutting-edge combat robots, engineered for performance and durability.
           </p>
         </header>
-
-        <div className="max-w-7xl mx-auto relative">
-          <Slider ref={sliderRef} {...settings}>
-            {projects.map((project) => (
-              <ProjectSection key={project.id} project={project} />
-            ))}
-          </Slider>
-
-          {/* Navigation Arrows */}
-          <button
-            onClick={() => sliderRef.current?.slickPrev()}
-            className="absolute left-2 sm:left-4 md:left-0 top-1/2 transform -translate-y-1/2 z-10 p-2 sm:p-3 bg-black/50 rounded-full text-white hover:bg-black/80 transition-all duration-300 hover:scale-110"
-          >
-            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
-          </button>
-          <button
-            onClick={() => sliderRef.current?.slickNext()}
-            className="absolute right-2 sm:right-4 md:right-0 top-1/2 transform -translate-y-1/2 z-10 p-2 sm:p-3 bg-black/50 rounded-full text-white hover:bg-black/80 transition-all duration-300 hover:scale-110"
-          >
-            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
-          </button>
-        </div>
+        <ProjectStrip projects={projects} />
       </div>
     </section>
   );
 }
 
-function ProjectSection({ project }) {
-  const [isExpanded, setIsExpanded] = React.useState(false);
+function ProjectStrip({ projects }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const prevProject = () => {
+    setCurrentIndex((prev) => (prev === 0 ? projects.length - 1 : prev - 1));
+  };
+
+  const nextProject = () => {
+    setCurrentIndex((prev) => (prev === projects.length - 1 ? 0 : prev + 1));
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowLeft") prevProject();
+      if (e.key === "ArrowRight") nextProject();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
-    <div className="w-full flex flex-col lg:flex-row min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] xl:min-h-[750px]">
-      {/* Image Section */}
-      <div className="w-full lg:w-2/3 h-64 sm:h-96 md:h-96 lg:h-auto overflow-hidden">
+    <div className="relative flex flex-col justify-center items-center">
+      <div className="w-full max-w-[100vw]">
+        <ProjectCard project={projects[currentIndex]} isActive />
+      </div>
+      <div className="flex justify-center gap-4 items-center w-full mt-4">
+        <button
+          onClick={prevProject}
+          className="p-2 rounded-full bg-white/10 border border-white/30 text-white hover:bg-white/20 transition"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <button
+          onClick={nextProject}
+          className="p-2 rounded-full bg-white/10 border border-white/30 text-white hover:bg-white/20 transition"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ProjectCard({ project, isActive }) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div
+      className={`w-full bg-black/30 rounded-lg border ${
+        isActive ? "border-white/30" : "border-white/10"
+      } transition-all flex flex-col md:flex-row`}
+    >
+      <div className="w-full md:w-1/3 flex items-center justify-center overflow-hidden">
         <Image
           src={project.imageUrl}
           alt={project.title}
-          className="w-full h-full object-cover transition-transform duration-500"
-          loading="lazy"
+          className="w-full h-full object-cover"
         />
       </div>
+      <div className="w-full md:w-2/3 p-6 flex flex-col justify-between">
+        <div className="flex flex-wrap gap-2 mb-3">
+          {project.tags.map((tag, idx) => (
+            <span
+              key={idx}
+              className="px-2.5 py-1 text-xs font-medium rounded-full border border-white/30 bg-white/10 text-white"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <h3 className="text-xl md:text-2xl font-bold text-white mb-3">
+          {project.title}
+        </h3>
+        <p className="text-sm md:text-base text-gray-300 mb-4">
+          {project.description}
+        </p>
 
-      {/* Content Section */}
-      <div className="w-full lg:w-1/2 p-4 sm:p-5 md:p-6 lg:p-8 xl:p-10 flex flex-col justify-center bg-black text-white">
-        <div className="mb-4 sm:mb-5 md:mb-6">
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2 mb-3 sm:mb-4">
-            {project.tags.map((tag, idx) => (
-              <span
-                key={idx}
-                className="px-2 py-1 sm:px-3 sm:py-1.5 text-xs sm:text-sm font-medium rounded-full border border-white/30 bg-white/10 text-white transition-all duration-300 hover:bg-white/20"
-              >
-                {tag}
-              </span>
-            ))}
+        {/* Mobile: Toggle visibility */}
+        <div className={`md:hidden ${expanded ? "block" : "hidden"}`}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-5">
+            <div>
+              <h4 className="text-base font-semibold mb-2 text-white">Materials</h4>
+              {Object.entries(project.materials).map(([key, value]) => (
+                <p key={key} className="text-gray-300 text-sm">
+                  <span className="font-medium">{key}:</span> {value}
+                </p>
+              ))}
+            </div>
+            <div>
+              <h4 className="text-base font-semibold mb-2 text-white">Weapon System</h4>
+              <p className="text-sm text-gray-300">{project.weaponSystem}</p>
+            </div>
+            <div>
+              <h4 className="text-base font-semibold mb-2 text-white">Drive System</h4>
+              {project.driveSystem.map((item, idx) => (
+                <p key={idx} className="text-sm text-gray-300">{item}</p>
+              ))}
+            </div>
           </div>
-
-          {/* Title */}
-          <h3 className="text-lg sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold mb-3 sm:mb-4 leading-tight">
-            {project.title}
-          </h3>
+          <div>
+            <h4 className="text-base font-semibold mb-2 text-white">Key Highlights</h4>
+            <ul className="space-y-1">
+              {project.highlights.map((highlight, idx) => (
+                <li key={idx} className="text-sm text-gray-300 flex gap-2">
+                  • <span>{highlight}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        {/* Mobile & Tablet: Collapsible content */}
-        <div className="lg:hidden">
-          {!isExpanded ? (
-            <p className="text-sm sm:text-base text-gray-300 leading-relaxed mb-4 line-clamp-3">
-              {project.description}
-            </p>
-          ) : (
-            <div className="space-y-4 sm:space-y-5 mb-4">
-              <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
-                {project.description}
-              </p>
-
-              {/* Materials */}
-              {project.materials && (
-                <div>
-                  <h4 className="text-sm sm:text-base font-semibold mb-2 sm:mb-3">Materials Used</h4>
-                  <div className="space-y-2">
-                    {Object.entries(project.materials).map(([k, v]) => (
-                      <div key={k} className="flex items-start gap-2 sm:gap-3">
-                        <span className="w-2 h-2 rounded-full bg-white mt-1.5 sm:mt-2 flex-shrink-0"></span>
-                        <span className="text-sm sm:text-base text-gray-300">
-                          <span className="font-medium">{k}:</span> {v}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Weapon System */}
-              {project.weaponSystem && (
-                <div>
-                  <h4 className="text-sm sm:text-base font-semibold mb-2">Weapon System</h4>
-                  <p className="text-sm sm:text-base text-gray-300">{project.weaponSystem}</p>
-                </div>
-              )}
-
-              {/* Drive System */}
-              {project.driveSystem && project.driveSystem.length > 0 && (
-                <div>
-                  <h4 className="text-sm sm:text-base font-semibold mb-2">Drive System</h4>
-                  <ul className="space-y-1 sm:space-y-2">
-                    {project.driveSystem.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-2 sm:gap-3">
-                        <span className="w-2 h-2 rounded-full bg-white mt-1.5 sm:mt-2 flex-shrink-0"></span>
-                        <span className="text-sm sm:text-base text-gray-300">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Highlights */}
-              {project.highlights && project.highlights.length > 0 && (
-                <div>
-                  <h4 className="text-sm sm:text-base font-semibold mb-2">Key Highlights</h4>
-                  <ul className="space-y-1 sm:space-y-2">
-                    {project.highlights.map((h, idx) => (
-                      <li key={idx} className="flex items-start gap-2 sm:gap-3">
-                        <span className="w-2 h-2 rounded-full bg-white mt-1.5 sm:mt-2 flex-shrink-0"></span>
-                        <span className="text-sm sm:text-base text-gray-300">{h}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+        {/* Desktop: Always visible */}
+        <div className="hidden md:block">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-5">
+            <div>
+              <h4 className="text-base font-semibold mb-2 text-white">Materials</h4>
+              {Object.entries(project.materials).map(([key, value]) => (
+                <p key={key} className="text-gray-300 text-sm">
+                  <span className="font-medium">{key}:</span> {value}
+                </p>
+              ))}
             </div>
-          )}
-
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center text-sm sm:text-base font-medium hover:text-gray-300 transition-colors duration-300 group"
-          >
-            {isExpanded ? "Show Less" : "Read More"}
-            {isExpanded ? (
-              <ChevronUp className="w-4 h-4 ml-1 sm:ml-2 transition-transform duration-300 group-hover:-translate-y-0.5" />
-            ) : (
-              <ChevronDown className="w-4 h-4 ml-1 sm:ml-2 transition-transform duration-300 group-hover:translate-y-0.5" />
-            )}
-          </button>
+            <div>
+              <h4 className="text-base font-semibold mb-2 text-white">Weapon System</h4>
+              <p className="text-sm text-gray-300">{project.weaponSystem}</p>
+            </div>
+            <div>
+              <h4 className="text-base font-semibold mb-2 text-white">Drive System</h4>
+              {project.driveSystem.map((item, idx) => (
+                <p key={idx} className="text-sm text-gray-300">{item}</p>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h4 className="text-base font-semibold mb-2 text-white">Key Highlights</h4>
+            <ul className="space-y-1">
+              {project.highlights.map((highlight, idx) => (
+                <li key={idx} className="text-sm text-gray-300 flex gap-2">
+                  • <span>{highlight}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        {/* Desktop & Large screens: Full layout */}
-        <div className="hidden lg:block space-y-3 lg:space-y-4 xl:space-y-5">
-          <p className="text-sm lg:text-base xl:text-lg text-gray-300 leading-relaxed">
-            {project.description}
-          </p>
-
-          {/* Materials */}
-          {project.materials && (
-            <div>
-              <h4 className="text-sm lg:text-base xl:text-lg font-semibold mb-2 lg:mb-3">Materials</h4>
-              <div className="space-y-1 lg:space-y-2">
-                {Object.entries(project.materials).map(([k, v]) => (
-                  <div key={k} className="flex items-start gap-2 lg:gap-3">
-                    <span className="w-2 h-2 rounded-full bg-white mt-1.5 lg:mt-2 flex-shrink-0"></span>
-                    <span className="text-sm lg:text-base xl:text-lg text-gray-300">
-                      <span className="font-medium">{k}:</span> {v}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Weapon System */}
-          {project.weaponSystem && (
-            <div>
-              <h4 className="text-sm lg:text-base xl:text-lg font-semibold mb-1 lg:mb-2">Weapon System</h4>
-              <p className="text-sm lg:text-base xl:text-lg text-gray-300">
-                {project.weaponSystem}
-              </p>
-            </div>
-          )}
-
-          {/* Drive System */}
-          {project.driveSystem && project.driveSystem.length > 0 && (
-            <div>
-              <h4 className="text-sm lg:text-base xl:text-lg font-semibold mb-1 lg:mb-2">Drive System</h4>
-              <div className="flex flex-wrap gap-x-3 lg:gap-x-4 gap-y-1 lg:gap-y-2">
-                {project.driveSystem.map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-1.5 lg:gap-2">
-                    <span className="w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full bg-white flex-shrink-0"></span>
-                    <span className="text-sm lg:text-base xl:text-lg text-gray-300">
-                      {item}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Highlights */}
-          {project.highlights && project.highlights.length > 0 && (
-            <div>
-              <h4 className="text-sm lg:text-base xl:text-lg font-semibold mb-1 lg:mb-2">Key Highlights</h4>
-              <div className="space-y-1 lg:space-y-2">
-                {project.highlights.map((h, idx) => (
-                  <div key={idx} className="flex items-start gap-2 lg:gap-3">
-                    <span className="w-2 h-2 rounded-full bg-white mt-1.5 lg:mt-2 flex-shrink-0"></span>
-                    <span className="text-sm lg:text-base xl:text-lg text-gray-300">
-                      {h}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+        {/* Read More Button (Mobile Only) */}
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="md:hidden mt-4 p-2 rounded-full bg-white/10 border border-white/30 text-white hover:bg-white/20 transition flex items-center gap-2"
+        >
+          {expanded ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+          <span className="text-sm">{expanded ? "Show Less" : "Read More"}</span>
+        </button>
       </div>
     </div>
   );
